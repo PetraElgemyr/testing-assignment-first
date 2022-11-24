@@ -1,13 +1,13 @@
-import * as functions from "./functions";
+import { addTodo, changeTodo, removeAllTodos } from "./functions";
 import { Todo } from "./models/Todo";
 
 let todos: Todo[] = JSON.parse(localStorage.getItem("todos") || "[]");
 
-export function clearClick() {
+export const clearClick = () => {
   document.getElementById("clearTodos")?.addEventListener("click", () => {
     exports.clearTodos(todos);
   });
-}
+};
 
 (document.getElementById("newTodoForm") as HTMLFormElement)?.addEventListener(
   "submit",
@@ -23,8 +23,8 @@ export function clearClick() {
   }
 );
 
-function createNewTodo(todoText: string, todos: Todo[]) {
-  let result = functions.addTodo(todoText, todos);
+export function createNewTodo(todoText: string, todos: Todo[]) {
+  let result = addTodo(todoText, todos);
 
   if (result.success) {
     createHtml(todos);
@@ -33,7 +33,7 @@ function createNewTodo(todoText: string, todos: Todo[]) {
   }
 }
 
-function createHtml(todos: Todo[]) {
+export function createHtml(todos: Todo[]) {
   localStorage.setItem("todos", JSON.stringify(todos));
 
   let todosContainer: HTMLUListElement = document.getElementById(
@@ -59,12 +59,12 @@ function createHtml(todos: Todo[]) {
   }
 }
 
-function toggleTodo(todo: Todo) {
-  functions.changeTodo(todo);
+export function toggleTodo(todo: Todo) {
+  changeTodo(todo);
   createHtml(todos);
 }
 
-function displayError(error: string, show: boolean) {
+export function displayError(error: string, show: boolean) {
   let errorContainer: HTMLDivElement = document.getElementById(
     "error"
   ) as HTMLDivElement;
@@ -79,14 +79,8 @@ function displayError(error: string, show: boolean) {
 }
 
 export function clearTodos(todos: Todo[]) {
-  exports.removeAllTodos(todos);
+  removeAllTodos(todos);
   createHtml(todos);
 }
 
 // createHtml(todos);
-export function init() {
-  throw new Error("Function not implemented.");
-}
-export function removeAllTodos(list: Todo[]) {
-  throw new Error("Function not implemented.");
-}
