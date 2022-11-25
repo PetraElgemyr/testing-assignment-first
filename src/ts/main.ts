@@ -60,7 +60,7 @@ export function createHtml(todos: Todo[]) {
 }
 
 export function toggleTodo(todo: Todo) {
-  changeTodo(todo);
+  exports.changeTodo(todo);
   createHtml(todos);
 }
 

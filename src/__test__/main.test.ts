@@ -40,6 +40,7 @@ test("should toggle todo", () => {
   //arrange
   let todo: Todo = new Todo("Tvätta", false);
   let spy = jest.spyOn(functions, "changeTodo").mockReturnValue();
+
   //act
   mainFunctions.toggleTodo(todo);
 
