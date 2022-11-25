@@ -9,19 +9,21 @@ export const clearClick = () => {
   });
 };
 
-(document.getElementById("newTodoForm") as HTMLFormElement)?.addEventListener(
-  "submit",
-  (e: SubmitEvent) => {
-    e.preventDefault();
+export const handleSubmit = () => {
+  (document.getElementById("newTodoForm") as HTMLFormElement)?.addEventListener(
+    "submit",
+    (e: SubmitEvent) => {
+      e.preventDefault();
 
-    let todoText: string = (
-      document.getElementById("newTodoText") as HTMLInputElement
-    ).value;
-    console.log("Todos when creating", todos);
+      let todoText: string = (
+        document.getElementById("newTodoText") as HTMLInputElement
+      ).value;
+      console.log("Todos when creating", todos);
 
-    createNewTodo(todoText, todos);
-  }
-);
+      exports.createNewTodo(todoText, todos);
+    }
+  );
+};
 
 export function createNewTodo(todoText: string, todos: Todo[]) {
   let result = addTodo(todoText, todos);
@@ -52,7 +54,7 @@ export function createHtml(todos: Todo[]) {
     li.classList.add("todo__text");
     li.innerHTML = todos[i].text;
     li.addEventListener("click", () => {
-      toggleTodo(todos[i]);
+      exports.toggleTodo(todos[i]);
     });
 
     todosContainer.appendChild(li);
@@ -60,8 +62,8 @@ export function createHtml(todos: Todo[]) {
 }
 
 export function toggleTodo(todo: Todo) {
-  exports.changeTodo(todo);
-  createHtml(todos);
+  changeTodo(todo);
+  exports.createHtml(todos);
 }
 
 export function displayError(error: string, show: boolean) {
@@ -80,7 +82,9 @@ export function displayError(error: string, show: boolean) {
 
 export function clearTodos(todos: Todo[]) {
   removeAllTodos(todos);
-  createHtml(todos);
+  exports.createHtml(todos);
 }
 
+clearClick();
+handleSubmit();
 // createHtml(todos);
