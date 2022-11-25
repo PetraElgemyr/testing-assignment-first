@@ -1,19 +1,20 @@
 import { addTodo, changeTodo, removeAllTodos } from "./functions";
 import { Todo } from "./models/Todo";
+import { describe, test, expect, jest } from "@jest/globals";
 
 let todos: Todo[] = JSON.parse(localStorage.getItem("todos") || "[]");
 
-export const clearClick = () => {
+export function clearClick() {
   document.getElementById("clearTodos")?.addEventListener("click", () => {
     exports.clearTodos(todos);
   });
-};
+}
 
-export const handleSubmit = () => {
+export function handleSubmit() {
   (document.getElementById("newTodoForm") as HTMLFormElement)?.addEventListener(
     "submit",
     (e: SubmitEvent) => {
-      e.preventDefault();
+      exports.e.preventDefault();
 
       let todoText: string = (
         document.getElementById("newTodoText") as HTMLInputElement
@@ -23,15 +24,16 @@ export const handleSubmit = () => {
       exports.createNewTodo(todoText, todos);
     }
   );
-};
+}
 
 export function createNewTodo(todoText: string, todos: Todo[]) {
   let result = addTodo(todoText, todos);
 
   if (result.success) {
-    createHtml(todos);
+    exports.createHtml(todos);
   } else {
-    displayError(result.error, true);
+    console.log(displayError);
+    exports.displayError(result.error, true);
   }
 }
 
@@ -85,6 +87,6 @@ export function clearTodos(todos: Todo[]) {
   exports.createHtml(todos);
 }
 
+//createHtml(todos);
 clearClick();
 handleSubmit();
-// createHtml(todos);
