@@ -6,14 +6,14 @@
 import * as functions from "./../ts/main";
 import { Todo } from "../ts/models/Todo";
 import { IAddResponse } from "../ts/models/IAddResult";
-import { describe, test, expect, jest } from "@jest/globals";
+import { describe, test, expect, jest, beforeEach } from "@jest/globals";
 import * as fnsFunctions from "./../ts/functions";
 
 describe("createNewTodo", () => {
   test("should run createHTML when success=true", () => {
     //Arrange
     let todos: Todo[] = [];
-    let theText: string = "hej";
+    let theText: string = "Städa";
     let spy = jest.spyOn(functions, "createHtml").mockReturnValue();
 
     //Act
@@ -23,75 +23,16 @@ describe("createNewTodo", () => {
     expect(spy).toBeCalledTimes(1);
   });
 
-  test("if the result.success==false", () => {
+  test("should run displayError when success=false", () => {
     //Arrange
     let todos: Todo[] = [];
-    let aText: string = "m";
+    let theText: string = "Ex";
     let spy = jest.spyOn(functions, "displayError").mockReturnValue();
-
     //Act
-    functions.createNewTodo(aText, todos);
-
+    functions.createNewTodo(theText, todos);
     //Assert
     expect(spy).toBeCalledTimes(1);
   });
-});
-
-describe("createHtml", () => {
-  test("should loop my list", () => {
-    //Arrange
-    //Act
-    //Assert
-  });
-
-  test("should empty ul", () => {
-    //Arrange
-    let todos: Todo[] = [new Todo("text", false)];
-    document.body.innerHTML = `<ul id="todos" class="todo"></ul>`;
-
-    //act
-    functions.createHtml(todos);
-
-    //assert
-    expect(document.getElementById("todos")?.innerHTML).toBe("");
-  });
-  // test("should add to localstorage", () => {
-  //   //Arrange
-  //   let todos: Todo[] = [new Todo("text", false)];
-
-  //   //Act
-  //   functions.createHtml(todos);
-
-  //   //Assert
-  //   expect(localStorage).toBe(todos);
-  // });
-
-  // test("should loop list", () => {
-  //   //Arrange
-  //   let todos: Todo[] = [new Todo("Tvätta", false), new Todo("Handla", false)];
-  //   let aText: string = "";
-  //   let newLi = document.createElement("li");
-  //   // let oldLis: HTMLLIElement = document.getElementsByClassName("todo__text");
-  //   //Act
-  //   functions.createHtml(todos);
-  //   //Assert
-  //       expect((newLi.innerText = aText)).toBe(aText);
-  // });
-
-  // test("should click li-element", () => {
-  //   //Arrange
-  //   let spy = jest.spyOn(functions, "toggleTodo").mockReturnValue();
-  //   document.body.innerHTML = `<li id="myLiTag"></li>`;
-
-  //   let todos: Todo[] = [new Todo("text", false)];
-
-  //   functions.createHtml(todos);
-  //   //Act
-  //   document.getElementById("myLiTag")?.click();
-
-  //   //Assert
-  //   expect(spy).toBeCalledTimes(0);
-  // });
 });
 
 describe("toggleTodo", () => {
@@ -128,10 +69,8 @@ describe("clearTodo", () => {
     //Arrange
     let todos: Todo[] = [new Todo("Städa", false)];
     let spy = jest.spyOn(functions, "createHtml").mockReturnValue();
-
     //Act
     functions.clearTodos(todos);
-
     //Assert
     expect(spy).toHaveBeenCalled();
   });
@@ -140,24 +79,20 @@ describe("clearTodo", () => {
     //Arrange
     let todos: Todo[] = [new Todo("Städa", false)];
     let spy = jest.spyOn(fnsFunctions, "removeAllTodos").mockReturnValue();
-
     //Act
     functions.clearTodos(todos);
-
     //Assert
     expect(spy).toHaveBeenCalled();
   });
 });
 
-test("should be able to click", () => {
+test("should be able to click clear btn", () => {
   //Arrange
   let spy = jest.spyOn(functions, "clearTodos").mockReturnValue();
   document.body.innerHTML = `<button type="button" id="clearTodos">Rensa lista</button>`;
-
   functions.clearClick();
   //Act
   document.getElementById("clearTodos")?.click();
-
   //Assert
   expect(spy).toHaveBeenCalled();
 });
@@ -204,14 +139,72 @@ test("should be able to click", () => {
  * 
  * 
  */
-describe("displayError", () => {
-  test("add to localStorage", () => {
-    let show: boolean = true;
-    let error: string = "Du måste ange minst två bokstäver";
-    document.body.innerHTML = `<div id="error" class="error"></div> `;
+// describe("displayError", () => {
+//   test("add to localStorage", () => {
+//     let show: boolean = true;
+//     let error: string = "Du måste ange minst två bokstäver";
+//     document.body.innerHTML = `<div id="error" class="error"></div> `;
 
-    functions.displayError(error, show);
+//     functions.displayError(error, show);
 
-    expect(document.getElementById("error")?.classList).toBe("show");
+//     expect(document.getElementById("error")?.classList).toBe("show");
+//   });
+// });
+
+describe("createHtml", () => {
+  test("should empty ul", () => {
+    //Arrange
+    let todos: Todo[] = [new Todo("Handla", false)];
+    document.body.innerHTML = `<ul id="todos" class="todo"></ul>`;
+
+    //act
+    functions.createHtml(todos);
+
+    //assert
+    expect(document.getElementById("todos")?.innerHTML).toBe(
+      '<li class="todo__text">Handla</li>'
+    );
   });
+  beforeEach(() => {
+    jest.resetModules();
+    jest.restoreAllMocks();
+  });
+  test("should create li-tags for list", () => {
+    document.body.innerHTML = `<ul id="todos" class="todo"></ul>`;
+    let theUl = document.getElementById("todos") as HTMLUListElement;
+    let todos: Todo[] = [new Todo("Handla", false)];
+
+    functions.createHtml(todos);
+
+    expect(theUl.innerHTML).toBe(`<li class=\"todo__text\">Handla</li>`);
+  });
+
+  // test("should add to localstorage", () => {
+  //   //Arrange
+  //   let todos: Todo[] = [new Todo("text", false)];
+  //   //Act
+  //   functions.createHtml(todos);
+  //   //Assert
+  //   expect(localStorage).toContain(JSON.stringify(todos));
+  //   //revieced är:`{"todos": "[{\"text\":\"text\",\"done\":false}]"}`
+  //   //går ej att skriva in
+  // });
+
+  /***************************Funkar ej*********/
+  // test("should click li-element", () => {
+  //   //Arrange
+  //   let spy = jest.spyOn(functions, "toggleTodo").mockReturnValue();
+  //   document.body.innerHTML = `<li class="todo__text"></li>`;
+  //   let liClassNameLength: number = "todo__text".length;
+  //   let todos: Todo[] = [new Todo("Handla", false)];
+  //   functions.createHtml(todos);
+
+  //   //Act
+  //   functions.createHtml(todos);
+
+  //   //Assert
+  //   expect(document.getElementsByTagName("li").classlist).toBe(
+  //     liClassNameLength
+  //   );
+  // });
 });
