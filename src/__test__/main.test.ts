@@ -128,7 +128,7 @@ describe("displayError", () => {
 
   //   expect(document.getElementById("error")?.className).toContain("show");
   // });
-  test("add to localStorage", () => {
+  test("should be classname error for scss", () => {
     let show: boolean = false;
     let error: string = "Du måste ange minst två bokstäver";
     document.body.innerHTML = `<div id="error" class="error"></div> `;
@@ -140,19 +140,6 @@ describe("displayError", () => {
 });
 
 describe("createHtml", () => {
-  test("should empty ul", () => {
-    //Arrange
-    let todos: Todo[] = [new Todo("Handla", false)];
-    document.body.innerHTML = `<ul id="todos" class="todo"></ul>`;
-
-    //act
-    functions.createHtml(todos);
-
-    //assert
-    expect(document.getElementById("todos")?.innerHTML).toBe(
-      '<li class="todo__text">Handla</li>'
-    );
-  });
   beforeEach(() => {
     jest.resetModules();
     jest.restoreAllMocks();
