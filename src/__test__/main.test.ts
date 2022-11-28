@@ -112,44 +112,32 @@ test("should be able to click clear btn", () => {
 
 //     //Assert
 //     expect(spy).toHaveBeenCalled();
-//     //
 //     expect(spy).toBeCalledWith(todoText, todos);
 //   });
 // });
 
-/**********
- * test("should be able to submit", () => {
-  //Arrange
-  document.body.innerHTML = ` 
-  <form id="newTodoForm">
-  <input type="text" id="newTodoText" />
-  </form>`;
-  let textValue: string = (
-    document.getElementById("newTodoText") as HTMLInputElement
-  ).value;
-  textValue = "Lorem";
-  mainFunctions.handleSubmit();
+describe("displayError", () => {
+  /*****************Test funkar ej när show boolean=true.
+   * ***********************Borde få classlist.add = "show" men recieved är "error" ************* */
+  // test("add to localStorage", () => {
+  //   let show: boolean = true;
+  //   let error: string = "Du måste ange minst två bokstäver";
+  //   document.body.innerHTML = `<div id="error" class="error"></div> `;
 
-  //act
-  document.getElementById("newTodoForm")?.onsubmit;
+  //   functions.displayError(error, show);
 
-  //assert
-  expect(textValue).toBe(textValue);
+  //   expect(document.getElementById("error")?.className).toContain("show");
+  // });
+  test("add to localStorage", () => {
+    let show: boolean = false;
+    let error: string = "Du måste ange minst två bokstäver";
+    document.body.innerHTML = `<div id="error" class="error"></div> `;
+
+    functions.displayError(error, show);
+
+    expect(document.getElementById("error")?.className).toBe("error");
+  });
 });
- * 
- * 
- */
-// describe("displayError", () => {
-//   test("add to localStorage", () => {
-//     let show: boolean = true;
-//     let error: string = "Du måste ange minst två bokstäver";
-//     document.body.innerHTML = `<div id="error" class="error"></div> `;
-
-//     functions.displayError(error, show);
-
-//     expect(document.getElementById("error")?.classList).toBe("show");
-//   });
-// });
 
 describe("createHtml", () => {
   test("should empty ul", () => {
@@ -179,6 +167,9 @@ describe("createHtml", () => {
     expect(theUl.innerHTML).toBe(`<li class=\"todo__text\">Handla</li>`);
   });
 
+  /******************Fungerar ej  ******************
+ revieced är:`{"todos": "[{\"text\":\"text\",\"done\":false}]"}` men när man skriver in blir det inte samma
+**************************************************** */
   // test("should add to localstorage", () => {
   //   //Arrange
   //   let todos: Todo[] = [new Todo("text", false)];
@@ -186,25 +177,25 @@ describe("createHtml", () => {
   //   functions.createHtml(todos);
   //   //Assert
   //   expect(localStorage).toContain(JSON.stringify(todos));
-  //   //revieced är:`{"todos": "[{\"text\":\"text\",\"done\":false}]"}`
-  //   //går ej att skriva in
   // });
 
-  /***************************Funkar ej*********/
+  /***************************Funkar ej****************''***/
   // test("should click li-element", () => {
   //   //Arrange
-  //   let spy = jest.spyOn(functions, "toggleTodo").mockReturnValue();
+  //   document.body.innerHTML = `<ul id="todos" class="todo"></ul>`;
   //   document.body.innerHTML = `<li class="todo__text"></li>`;
-  //   let liClassNameLength: number = "todo__text".length;
+  //   let list = document.getElementsByClassName("todos")[0];
   //   let todos: Todo[] = [new Todo("Handla", false)];
-  //   functions.createHtml(todos);
+  //   let spy = jest.spyOn(functions, "toggleTodo").mockReturnValue();
 
   //   //Act
   //   functions.createHtml(todos);
+  //   list.getElementsByClassName("todo__text")[0].click();
 
   //   //Assert
-  //   expect(document.getElementsByTagName("li").classlist).toBe(
-  //     liClassNameLength
+  //   expect(list.getElementsByClassName("todo__text")[0].innerHTML).toBe(
+  //     "todo__text"
   //   );
+  //   expect(spy).toHaveBeenCalled();
   // });
 });
